@@ -11,7 +11,7 @@ import chatmultithread.gui.JanelaServidor;
 public class ChatMultithread {
     
     public static final String HOST = "localhost";
-    public static final int PORTA = 8080;
+    public static final int PORTA = 21300;  // portas liberadas pela CTI: 21300 a 21900 (TCP e UDP)
     
     public static void main( String[] args ) throws Exception {
         
