@@ -10,11 +10,17 @@ import java.awt.Color;
  */
 public class ComandoDesenhoCor extends ComandoDesenho {
     
+    private Color cor;
+    
     public ComandoDesenhoCor( Color cor ) {
         this.cor = cor;
     }
     
     public void desenhar( JanelaDesenho janela ) {
+    }
+
+    public Color getCor() {
+        return cor;
     }
     
 }

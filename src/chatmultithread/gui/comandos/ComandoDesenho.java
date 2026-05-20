@@ -1,7 +1,6 @@
 package chatmultithread.gui.comandos;
 
 import chatmultithread.gui.JanelaDesenho;
-import java.awt.Color;
 
 /**
  * Comandos para desenho.
@@ -14,7 +13,6 @@ public abstract class ComandoDesenho {
     protected int y1;
     protected int x2;
     protected int y2;
-    protected Color cor;
 
     public abstract void desenhar( JanelaDesenho janela );
 
@@ -48,14 +46,6 @@ public abstract class ComandoDesenho {
 
     public void setY2( int y2 ) {
         this.y2 = y2;
-    }
-
-    public Color getCor() {
-        return cor;
-    }
-
-    public void setCor( Color cor ) {
-        this.cor = cor;
     }
     
 }
