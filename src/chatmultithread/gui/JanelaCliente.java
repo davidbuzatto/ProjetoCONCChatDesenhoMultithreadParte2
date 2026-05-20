@@ -1,5 +1,6 @@
 package chatmultithread.gui;
 
+import br.com.davidbuzatto.jsge.core.engine.EngineFrame;
 import chatmultithread.ChatMultithread;
 import chatmultithread.lexer.MensagensLexer;
 import chatmultithread.parser.MensagensParser;
@@ -39,10 +40,10 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
  */
 public class JanelaCliente extends javax.swing.JFrame {
     
-    private static final String MENSAGEM_TESTE = "[ponto 10 10 /]";
+    //private static final String MENSAGEM_TESTE = "[ponto 10 10 /]";
     //private static final String MENSAGEM_TESTE = "[linha 10 10 100 100 /]";
-    //private static final String MENSAGEM_TESTE = "[retangulo 10 10 100 100 /]";
-    //private static final String MENSAGEM_TESTE = "[circulo 10 10 100 /]";
+    private static final String MENSAGEM_TESTE = "[retangulo 10 10 100 100 /]";
+    //private static final String MENSAGEM_TESTE = "[circulo 60 60 50 /]";
     //private static final String MENSAGEM_TESTE = "[cor #00FF00 /]";
     //private static final String MENSAGEM_TESTE = "teste [b]teste[/b]";
     //private static final String MENSAGEM_TESTE = null;
@@ -67,6 +68,9 @@ public class JanelaCliente extends javax.swing.JFrame {
     
     // fluxo de saída do cliente
     private PrintWriter writer;
+    
+    // janela de desenho
+    private JanelaDesenho janelaDesenho;
     
     private static enum TipoProcessamento {
         LISTENER,
@@ -121,6 +125,13 @@ public class JanelaCliente extends javax.swing.JFrame {
             // cria o fluxo de saída (entrada no servidor)
             writer = new PrintWriter( socket.getOutputStream() );
             
+            // cria a janela de desenho
+            janelaDesenho = new JanelaDesenho( getWidth() - getInsets().left - getInsets().right, 200 );
+            janelaDesenho.setLocation( 
+                getLocation().x,
+                getLocation().y - janelaDesenho.getBounds().height
+            );
+            
             // marca como conectado
             conectado = true;
 
@@ -147,8 +158,9 @@ public class JanelaCliente extends javax.swing.JFrame {
                         SwingUtilities.invokeLater( () -> {
                             
                             try { 
-                                // faz a análise da mensagem e insere no JTextPane
-                                analisarMensagem( dados, areaMensagens, TipoProcessamento.VISITOR );
+                                // faz a análise da mensagem e insere no JTextPane se texto ou adiciona
+                                // um comando na janela de desenho
+                                analisarMensagem( dados, areaMensagens, janelaDesenho, TipoProcessamento.LISTENER );
                             } catch ( ParseException exc ) {
                                 // em caso de erro de análise, adiciona o texto cru
                                 Utils.adicionarTextoNaoFormatado( dados, areaMensagens );
@@ -186,7 +198,7 @@ public class JanelaCliente extends javax.swing.JFrame {
      * 
      * @throws ParseException Caso ocorra algum erro durante a análise da mensagem.
      */
-    public static void analisarMensagem( String mensagem, JTextPane textPane, TipoProcessamento tipo ) throws ParseException {
+    public static void analisarMensagem( String mensagem, JTextPane textPane, JanelaDesenho janelaDesenho, TipoProcessamento tipo ) throws ParseException {
         
         // cria o lexer
         MensagensLexer lexer = new MensagensLexer( 
@@ -205,10 +217,10 @@ public class JanelaCliente extends javax.swing.JFrame {
         // se o tipo de processamento for o de listener
         if ( tipo == TipoProcessamento.LISTENER ) {
             // percorre a árvore disparando os eventos e tratando cada um deles
-            ParseTreeWalker.DEFAULT.walk( new MensagensListenerImpl( textPane ), tree );
+            ParseTreeWalker.DEFAULT.walk( new MensagensListenerImpl( textPane, janelaDesenho ), tree );
         } else if ( tipo == TipoProcessamento.VISITOR ) {
             // cria o visitor
-            MensagensVisitorImpl visitor = new MensagensVisitorImpl( textPane );
+            MensagensVisitorImpl visitor = new MensagensVisitorImpl( textPane, janelaDesenho );
             // percorre a árvore e, ao percorrer, verifica o que aconteceu
             visitor.visit( tree );
         }

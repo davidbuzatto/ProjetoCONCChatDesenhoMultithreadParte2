@@ -1,5 +1,11 @@
 package chatmultithread.parser.impl.listener;
 
+import chatmultithread.gui.JanelaDesenho;
+import chatmultithread.gui.comandos.ComandoDesenhoCirculo;
+import chatmultithread.gui.comandos.ComandoDesenhoCor;
+import chatmultithread.gui.comandos.ComandoDesenhoLinha;
+import chatmultithread.gui.comandos.ComandoDesenhoPonto;
+import chatmultithread.gui.comandos.ComandoDesenhoRetangulo;
 import chatmultithread.parser.MensagensParser;
 import chatmultithread.parser.MensagensParserBaseListener;
 import chatmultithread.utils.Utils;
@@ -40,8 +46,11 @@ public class MensagensListenerImpl extends MensagensParserBaseListener {
     // pilha de cores: ao entrar em [c], empilha a nova cor; ao sair, desempilha,
     // restaurando automaticamente a cor do contexto anterior
     private Deque<Color> pilhaCor;
-
-    public MensagensListenerImpl( JTextPane textPane ) {
+    
+    // acesso à janela de desenho
+    private JanelaDesenho janelaDesenho;
+    
+    public MensagensListenerImpl( JTextPane textPane, JanelaDesenho janelaDesenho ) {
 
         this.textPane = textPane;
         this.attrSet = new SimpleAttributeSet();
@@ -49,6 +58,8 @@ public class MensagensListenerImpl extends MensagensParserBaseListener {
 
         // cor padrão na base da pilha: garante que peek() nunca retorne null
         this.pilhaCor.push( Color.BLACK );
+        
+        this.janelaDesenho = janelaDesenho;
 
     }
 
@@ -110,44 +121,71 @@ public class MensagensListenerImpl extends MensagensParserBaseListener {
     }
 
     @Override
+    public void exitMensagemDesenho( MensagensParser.MensagemDesenhoContext ctx ) {
+        Utils.adicionarTextoNaoFormatado( ctx.getText(), textPane );
+    }
+    
+    @Override
     public void enterDesenhoPonto( MensagensParser.DesenhoPontoContext ctx ) {
 
-        // ctx.NUM_INT(0) = x, ctx.NUM_INT(1) = y
-        System.out.println( "ponto" );
+        janelaDesenho.adicionarComando( 
+            new ComandoDesenhoPonto(
+                Integer.parseInt( ctx.NUM_INT(0).getText() ),
+                Integer.parseInt( ctx.NUM_INT(1).getText() )
+            )
+        );
 
     }
 
     @Override
     public void enterDesenhoLinha( MensagensParser.DesenhoLinhaContext ctx ) {
 
-        // ctx.NUM_INT(0) = x1, ctx.NUM_INT(1) = y1,
-        // ctx.NUM_INT(2) = x2, ctx.NUM_INT(3) = y2
-        System.out.println( "linha" );
+        janelaDesenho.adicionarComando( 
+            new ComandoDesenhoLinha(
+                Integer.parseInt( ctx.NUM_INT(0).getText() ),
+                Integer.parseInt( ctx.NUM_INT(1).getText() ),
+                Integer.parseInt( ctx.NUM_INT(2).getText() ),
+                Integer.parseInt( ctx.NUM_INT(3).getText() )
+            )
+        );
 
     }
 
     @Override
     public void enterDesenhoRetangulo( MensagensParser.DesenhoRetanguloContext ctx ) {
 
-        // ctx.NUM_INT(0) = x, ctx.NUM_INT(1) = y,
-        // ctx.NUM_INT(2) = largura, ctx.NUM_INT(3) = altura
-        System.out.println( "retangulo" );
+        janelaDesenho.adicionarComando( 
+            new ComandoDesenhoRetangulo(
+                Integer.parseInt( ctx.NUM_INT(0).getText() ),
+                Integer.parseInt( ctx.NUM_INT(1).getText() ),
+                Integer.parseInt( ctx.NUM_INT(2).getText() ),
+                Integer.parseInt( ctx.NUM_INT(3).getText() )
+            )
+        );
 
     }
 
     @Override
     public void enterDesenhoCirculo( MensagensParser.DesenhoCirculoContext ctx ) {
 
-        // ctx.NUM_INT(0) = x, ctx.NUM_INT(1) = y, ctx.NUM_INT(2) = raio
-        System.out.println( "circulo" );
+        janelaDesenho.adicionarComando( 
+            new ComandoDesenhoCirculo(
+                Integer.parseInt( ctx.NUM_INT(0).getText() ),
+                Integer.parseInt( ctx.NUM_INT(1).getText() ),
+                Integer.parseInt( ctx.NUM_INT(2).getText() )
+            )
+        );
 
     }
 
     @Override
     public void enterDesenhoCor( MensagensParser.DesenhoCorContext ctx ) {
 
-        // ctx.NUM_HEX_TOK() = cor no formato #RRGGBB
-        System.out.println( "cor" );
+        janelaDesenho.adicionarComando( 
+            new ComandoDesenhoCor(
+                new Color( Integer.parseInt( ctx.NUM_HEX_TOK().getText().replace( "#", "" ), 16 ) )
+            )
+        );
 
     }
 

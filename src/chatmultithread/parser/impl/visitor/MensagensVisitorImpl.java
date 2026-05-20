@@ -1,5 +1,11 @@
 package chatmultithread.parser.impl.visitor;
 
+import chatmultithread.gui.JanelaDesenho;
+import chatmultithread.gui.comandos.ComandoDesenhoCirculo;
+import chatmultithread.gui.comandos.ComandoDesenhoCor;
+import chatmultithread.gui.comandos.ComandoDesenhoLinha;
+import chatmultithread.gui.comandos.ComandoDesenhoPonto;
+import chatmultithread.gui.comandos.ComandoDesenhoRetangulo;
 import chatmultithread.parser.MensagensParser;
 import chatmultithread.parser.MensagensParserBaseVisitor;
 import chatmultithread.utils.Utils;
@@ -37,8 +43,11 @@ public class MensagensVisitorImpl extends MensagensParserBaseVisitor<Void> {
     // pilha de cores: ao entrar em [c], empilha a nova cor; ao sair, desempilha,
     // restaurando automaticamente a cor do contexto anterior
     private Deque<Color> pilhaCor;
+    
+    // acesso à janela de desenho
+    private JanelaDesenho janelaDesenho;
 
-    public MensagensVisitorImpl( JTextPane textPane ) {
+    public MensagensVisitorImpl( JTextPane textPane, JanelaDesenho janelaDesenho ) {
 
         this.textPane = textPane;
         this.attrSet = new SimpleAttributeSet();
@@ -46,6 +55,8 @@ public class MensagensVisitorImpl extends MensagensParserBaseVisitor<Void> {
 
         // cor padrão na base da pilha: garante que peek() nunca retorne null
         this.pilhaCor.push( Color.BLACK );
+        
+        this.janelaDesenho = janelaDesenho;
 
     }
 
@@ -113,12 +124,20 @@ public class MensagensVisitorImpl extends MensagensParserBaseVisitor<Void> {
     }
 
     @Override
+    public Void visitMensagemDesenho( MensagensParser.MensagemDesenhoContext ctx ) {
+        Utils.adicionarTextoNaoFormatado( ctx.getText(), textPane );
+        return super.visitMensagemDesenho( ctx );
+    }
+    
+    @Override
     public Void visitDesenhoPonto( MensagensParser.DesenhoPontoContext ctx ) {
-
-        // ctx.NUM_INT(0) = x, ctx.NUM_INT(1) = y
-        System.out.println( "ponto" );
-        System.out.println( ctx.NUM_INT(0) );
-        System.out.println( ctx.NUM_INT(1) );
+        
+        janelaDesenho.adicionarComando( 
+            new ComandoDesenhoPonto(
+                Integer.parseInt( ctx.NUM_INT(0).getText() ),
+                Integer.parseInt( ctx.NUM_INT(1).getText() )
+            )
+        );
 
         return null;
 
@@ -127,9 +146,14 @@ public class MensagensVisitorImpl extends MensagensParserBaseVisitor<Void> {
     @Override
     public Void visitDesenhoLinha( MensagensParser.DesenhoLinhaContext ctx ) {
 
-        // ctx.NUM_INT(0) = x1, ctx.NUM_INT(1) = y1,
-        // ctx.NUM_INT(2) = x2, ctx.NUM_INT(3) = y2
-        System.out.println( "linha" );
+        janelaDesenho.adicionarComando( 
+            new ComandoDesenhoLinha(
+                Integer.parseInt( ctx.NUM_INT(0).getText() ),
+                Integer.parseInt( ctx.NUM_INT(1).getText() ),
+                Integer.parseInt( ctx.NUM_INT(2).getText() ),
+                Integer.parseInt( ctx.NUM_INT(3).getText() )
+            )
+        );
 
         return null;
 
@@ -138,9 +162,14 @@ public class MensagensVisitorImpl extends MensagensParserBaseVisitor<Void> {
     @Override
     public Void visitDesenhoRetangulo( MensagensParser.DesenhoRetanguloContext ctx ) {
 
-        // ctx.NUM_INT(0) = x, ctx.NUM_INT(1) = y,
-        // ctx.NUM_INT(2) = largura, ctx.NUM_INT(3) = altura
-        System.out.println( "retangulo" );
+        janelaDesenho.adicionarComando( 
+            new ComandoDesenhoRetangulo(
+                Integer.parseInt( ctx.NUM_INT(0).getText() ),
+                Integer.parseInt( ctx.NUM_INT(1).getText() ),
+                Integer.parseInt( ctx.NUM_INT(2).getText() ),
+                Integer.parseInt( ctx.NUM_INT(3).getText() )
+            )
+        );
 
         return null;
 
@@ -148,9 +177,14 @@ public class MensagensVisitorImpl extends MensagensParserBaseVisitor<Void> {
 
     @Override
     public Void visitDesenhoCirculo( MensagensParser.DesenhoCirculoContext ctx ) {
-
-        // ctx.NUM_INT(0) = x, ctx.NUM_INT(1) = y, ctx.NUM_INT(2) = raio
-        System.out.println( "circulo" );
+        
+        janelaDesenho.adicionarComando( 
+            new ComandoDesenhoCirculo(
+                Integer.parseInt( ctx.NUM_INT(0).getText() ),
+                Integer.parseInt( ctx.NUM_INT(1).getText() ),
+                Integer.parseInt( ctx.NUM_INT(2).getText() )
+            )
+        );
 
         return null;
 
@@ -158,12 +192,14 @@ public class MensagensVisitorImpl extends MensagensParserBaseVisitor<Void> {
 
     @Override
     public Void visitDesenhoCor( MensagensParser.DesenhoCorContext ctx ) {
-
-        // ctx.NUM_HEX_TOK() = cor no formato #RRGGBB
-        System.out.println( "cor" );
-
+        
+        janelaDesenho.adicionarComando( 
+            new ComandoDesenhoCor(
+                new Color( Integer.parseInt( ctx.NUM_HEX_TOK().getText().replace( "#", "" ), 16 ) )
+            )
+        );
+        
         return null;
-
     }
 
     private void atualizarAttributeSet() {

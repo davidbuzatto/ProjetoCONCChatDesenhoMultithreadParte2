@@ -13,7 +13,7 @@ public class ChatMultithread {
     public static final String HOST = "localhost";
     public static final int PORTA = 21300;  // portas liberadas pela CTI: 21300 a 21900 (TCP e UDP)
     
-    private static final int QUANTIDADE_CLIENTES = 1;
+    private static final int QUANTIDADE_CLIENTES = 2;
     
     public static void main( String[] args ) throws Exception {
         
