@@ -78,6 +78,16 @@ public interface MensagensParserListener extends ParseTreeListener {
 	 */
 	void exitMensagemDesenho(MensagensParser.MensagemDesenhoContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MensagensParser#texto}.
+	 * @param ctx the parse tree
+	 */
+	void enterTexto(MensagensParser.TextoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MensagensParser#texto}.
+	 * @param ctx the parse tree
+	 */
+	void exitTexto(MensagensParser.TextoContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code desenhoPonto}
 	 * labeled alternative in {@link MensagensParser#desenho}.
 	 * @param ctx the parse tree
@@ -137,14 +147,4 @@ public interface MensagensParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDesenhoCor(MensagensParser.DesenhoCorContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MensagensParser#texto}.
-	 * @param ctx the parse tree
-	 */
-	void enterTexto(MensagensParser.TextoContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MensagensParser#texto}.
-	 * @param ctx the parse tree
-	 */
-	void exitTexto(MensagensParser.TextoContext ctx);
 }

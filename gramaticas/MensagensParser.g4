@@ -23,14 +23,14 @@ mensagem : NEG_ESQ  mensagem  NEG_DIR   # mensagemNegrito
          | desenho                      # mensagemDesenho
          ;
 
+texto    : STRING ;
+
 // regra intermediária que agrupa os comandos de desenho; cada alternativa
 // expõe os parâmetros como tokens individuais acessíveis no visitor/listener
 // via ctx.NUM_INT(i) e ctx.NUM_HEX_TOK()
-desenho : CMD_PONTO_INI     NUM_INT NUM_INT CMD_FIM                     # desenhoPonto
-        | CMD_LINHA_INI     NUM_INT NUM_INT NUM_INT NUM_INT CMD_FIM     # desenhoLinha
-        | CMD_RETANGULO_INI NUM_INT NUM_INT NUM_INT NUM_INT CMD_FIM     # desenhoRetangulo
-        | CMD_CIRCULO_INI   NUM_INT NUM_INT NUM_INT CMD_FIM             # desenhoCirculo
-        | CMD_COR_INI       NUM_HEX_TOK CMD_FIM                        # desenhoCor
+desenho : CMD_PONTO_INI     NUM_INT NUM_INT                 CMD_FIM   # desenhoPonto
+        | CMD_LINHA_INI     NUM_INT NUM_INT NUM_INT NUM_INT CMD_FIM   # desenhoLinha
+        | CMD_RETANGULO_INI NUM_INT NUM_INT NUM_INT NUM_INT CMD_FIM   # desenhoRetangulo
+        | CMD_CIRCULO_INI   NUM_INT NUM_INT NUM_INT         CMD_FIM   # desenhoCirculo
+        | CMD_COR_INI       NUM_HEX_TOK                     CMD_FIM   # desenhoCor
         ;
-
-texto    : STRING ;

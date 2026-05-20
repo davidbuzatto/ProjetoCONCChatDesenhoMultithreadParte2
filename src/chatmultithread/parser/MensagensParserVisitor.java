@@ -52,6 +52,12 @@ public interface MensagensParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMensagemDesenho(MensagensParser.MensagemDesenhoContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MensagensParser#texto}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTexto(MensagensParser.TextoContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code desenhoPonto}
 	 * labeled alternative in {@link MensagensParser#desenho}.
 	 * @param ctx the parse tree
@@ -86,10 +92,4 @@ public interface MensagensParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDesenhoCor(MensagensParser.DesenhoCorContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MensagensParser#texto}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTexto(MensagensParser.TextoContext ctx);
 }

@@ -89,6 +89,18 @@ public class MensagensParserBaseListener implements MensagensParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTexto(MensagensParser.TextoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTexto(MensagensParser.TextoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterDesenhoPonto(MensagensParser.DesenhoPontoContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -144,18 +156,6 @@ public class MensagensParserBaseListener implements MensagensParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitDesenhoCor(MensagensParser.DesenhoCorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterTexto(MensagensParser.TextoContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitTexto(MensagensParser.TextoContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

@@ -22,11 +22,6 @@ import javax.swing.text.StyleConstants;
  * os eventos enter dos nós ancestrais já foram disparados e o estado de
  * formatação está completo.
  *
- * Nota: após a separação da gramática combinada em gramática léxica
- * (MensagensParserLexer.g4) e gramática sintática (MensagensParser.g4), o ANTLR passa a
- * gerar a classe MensagensParser (e não mais MensagensParserParser). Todos os contextos
- * passam a ser referenciados como MensagensParser.XxxContext.
- *
  * @author Prof. Dr. David Buzatto
  */
 public class MensagensListenerImpl extends MensagensParserBaseListener {

@@ -19,11 +19,6 @@ import javax.swing.text.StyleConstants;
  * contadores e em uma pilha; ao alcançar um nó folha (texto), o estado
  * acumulado pelos ancestrais já está completo e é aplicado ao texto.
  *
- * Nota: após a separação da gramática combinada em gramática léxica
- * (MensagensParserLexer.g4) e gramática sintática (MensagensParser.g4), o ANTLR passa a
- * gerar a classe MensagensParser (e não mais MensagensParserParser). Todos os contextos
- * passam a ser referenciados como MensagensParser.XxxContext.
- *
  * @author Prof. Dr. David Buzatto
  */
 public class MensagensVisitorImpl extends MensagensParserBaseVisitor<Void> {

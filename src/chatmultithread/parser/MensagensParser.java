@@ -21,10 +21,10 @@ public class MensagensParser extends Parser {
 		CMD_LINHA_INI=8, CMD_RETANGULO_INI=9, CMD_CIRCULO_INI=10, CMD_COR_INI=11, 
 		STRING=12, CHAR=13, CMD_FIM=14, NUM_INT=15, NUM_HEX_TOK=16, SEP=17;
 	public static final int
-		RULE_inicio = 0, RULE_mensagem = 1, RULE_desenho = 2, RULE_texto = 3;
+		RULE_inicio = 0, RULE_mensagem = 1, RULE_texto = 2, RULE_desenho = 3;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"inicio", "mensagem", "desenho", "texto"
+			"inicio", "mensagem", "texto", "desenho"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -381,6 +381,49 @@ public class MensagensParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
+	public static class TextoContext extends ParserRuleContext {
+		public TerminalNode STRING() { return getToken(MensagensParser.STRING, 0); }
+		public TextoContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_texto; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MensagensParserListener ) ((MensagensParserListener)listener).enterTexto(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MensagensParserListener ) ((MensagensParserListener)listener).exitTexto(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MensagensParserVisitor ) return ((MensagensParserVisitor<? extends T>)visitor).visitTexto(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final TextoContext texto() throws RecognitionException {
+		TextoContext _localctx = new TextoContext(_ctx, getState());
+		enterRule(_localctx, 4, RULE_texto);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(37);
+			match(STRING);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
 	public static class DesenhoContext extends ParserRuleContext {
 		public DesenhoContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -507,22 +550,22 @@ public class MensagensParser extends Parser {
 
 	public final DesenhoContext desenho() throws RecognitionException {
 		DesenhoContext _localctx = new DesenhoContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_desenho);
+		enterRule(_localctx, 6, RULE_desenho);
 		try {
-			setState(61);
+			setState(63);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CMD_PONTO_INI:
 				_localctx = new DesenhoPontoContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(37);
-				match(CMD_PONTO_INI);
-				setState(38);
-				match(NUM_INT);
 				setState(39);
-				match(NUM_INT);
+				match(CMD_PONTO_INI);
 				setState(40);
+				match(NUM_INT);
+				setState(41);
+				match(NUM_INT);
+				setState(42);
 				match(CMD_FIM);
 				}
 				break;
@@ -530,17 +573,17 @@ public class MensagensParser extends Parser {
 				_localctx = new DesenhoLinhaContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(41);
-				match(CMD_LINHA_INI);
-				setState(42);
-				match(NUM_INT);
 				setState(43);
-				match(NUM_INT);
+				match(CMD_LINHA_INI);
 				setState(44);
 				match(NUM_INT);
 				setState(45);
 				match(NUM_INT);
 				setState(46);
+				match(NUM_INT);
+				setState(47);
+				match(NUM_INT);
+				setState(48);
 				match(CMD_FIM);
 				}
 				break;
@@ -548,17 +591,17 @@ public class MensagensParser extends Parser {
 				_localctx = new DesenhoRetanguloContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(47);
-				match(CMD_RETANGULO_INI);
-				setState(48);
-				match(NUM_INT);
 				setState(49);
-				match(NUM_INT);
+				match(CMD_RETANGULO_INI);
 				setState(50);
 				match(NUM_INT);
 				setState(51);
 				match(NUM_INT);
 				setState(52);
+				match(NUM_INT);
+				setState(53);
+				match(NUM_INT);
+				setState(54);
 				match(CMD_FIM);
 				}
 				break;
@@ -566,15 +609,15 @@ public class MensagensParser extends Parser {
 				_localctx = new DesenhoCirculoContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(53);
-				match(CMD_CIRCULO_INI);
-				setState(54);
-				match(NUM_INT);
 				setState(55);
-				match(NUM_INT);
+				match(CMD_CIRCULO_INI);
 				setState(56);
 				match(NUM_INT);
 				setState(57);
+				match(NUM_INT);
+				setState(58);
+				match(NUM_INT);
+				setState(59);
 				match(CMD_FIM);
 				}
 				break;
@@ -582,59 +625,16 @@ public class MensagensParser extends Parser {
 				_localctx = new DesenhoCorContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(58);
-				match(CMD_COR_INI);
-				setState(59);
-				match(NUM_HEX_TOK);
 				setState(60);
+				match(CMD_COR_INI);
+				setState(61);
+				match(NUM_HEX_TOK);
+				setState(62);
 				match(CMD_FIM);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class TextoContext extends ParserRuleContext {
-		public TerminalNode STRING() { return getToken(MensagensParser.STRING, 0); }
-		public TextoContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_texto; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MensagensParserListener ) ((MensagensParserListener)listener).enterTexto(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MensagensParserListener ) ((MensagensParserListener)listener).exitTexto(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MensagensParserVisitor ) return ((MensagensParserVisitor<? extends T>)visitor).visitTexto(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final TextoContext texto() throws RecognitionException {
-		TextoContext _localctx = new TextoContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_texto);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(63);
-			match(STRING);
 			}
 		}
 		catch (RecognitionException re) {
@@ -655,13 +655,13 @@ public class MensagensParser extends Parser {
 		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
 		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
 		"\u0001\u0005\u0001\u001e\b\u0001\n\u0001\f\u0001!\t\u0001\u0001\u0001"+
-		"\u0003\u0001$\b\u0001\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002"+
-		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002"+
-		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002"+
-		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002"+
-		"\u0001\u0002\u0001\u0002\u0003\u0002>\b\u0002\u0001\u0003\u0001\u0003"+
+		"\u0003\u0001$\b\u0001\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003"+
+		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003"+
+		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003"+
+		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003"+
+		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0003\u0003@\b\u0003"+
 		"\u0001\u0003\u0000\u0000\u0004\u0000\u0002\u0004\u0006\u0000\u0000G\u0000"+
-		"\t\u0001\u0000\u0000\u0000\u0002#\u0001\u0000\u0000\u0000\u0004=\u0001"+
+		"\t\u0001\u0000\u0000\u0000\u0002#\u0001\u0000\u0000\u0000\u0004%\u0001"+
 		"\u0000\u0000\u0000\u0006?\u0001\u0000\u0000\u0000\b\n\u0003\u0002\u0001"+
 		"\u0000\t\b\u0001\u0000\u0000\u0000\n\u000b\u0001\u0000\u0000\u0000\u000b"+
 		"\t\u0001\u0000\u0000\u0000\u000b\f\u0001\u0000\u0000\u0000\f\r\u0001\u0000"+
@@ -672,25 +672,25 @@ public class MensagensParser extends Parser {
 		"\u0015\u0016\u0005\u0004\u0000\u0000\u0016$\u0001\u0000\u0000\u0000\u0017"+
 		"\u0018\u0005\u0005\u0000\u0000\u0018\u0019\u0003\u0002\u0001\u0000\u0019"+
 		"\u001a\u0005\u0006\u0000\u0000\u001a$\u0001\u0000\u0000\u0000\u001b\u001f"+
-		"\u0003\u0006\u0003\u0000\u001c\u001e\u0003\u0002\u0001\u0000\u001d\u001c"+
+		"\u0003\u0004\u0002\u0000\u001c\u001e\u0003\u0002\u0001\u0000\u001d\u001c"+
 		"\u0001\u0000\u0000\u0000\u001e!\u0001\u0000\u0000\u0000\u001f\u001d\u0001"+
 		"\u0000\u0000\u0000\u001f \u0001\u0000\u0000\u0000 $\u0001\u0000\u0000"+
-		"\u0000!\u001f\u0001\u0000\u0000\u0000\"$\u0003\u0004\u0002\u0000#\u000f"+
+		"\u0000!\u001f\u0001\u0000\u0000\u0000\"$\u0003\u0006\u0003\u0000#\u000f"+
 		"\u0001\u0000\u0000\u0000#\u0013\u0001\u0000\u0000\u0000#\u0017\u0001\u0000"+
 		"\u0000\u0000#\u001b\u0001\u0000\u0000\u0000#\"\u0001\u0000\u0000\u0000"+
-		"$\u0003\u0001\u0000\u0000\u0000%&\u0005\u0007\u0000\u0000&\'\u0005\u000f"+
-		"\u0000\u0000\'(\u0005\u000f\u0000\u0000(>\u0005\u000e\u0000\u0000)*\u0005"+
-		"\b\u0000\u0000*+\u0005\u000f\u0000\u0000+,\u0005\u000f\u0000\u0000,-\u0005"+
-		"\u000f\u0000\u0000-.\u0005\u000f\u0000\u0000.>\u0005\u000e\u0000\u0000"+
-		"/0\u0005\t\u0000\u000001\u0005\u000f\u0000\u000012\u0005\u000f\u0000\u0000"+
-		"23\u0005\u000f\u0000\u000034\u0005\u000f\u0000\u00004>\u0005\u000e\u0000"+
-		"\u000056\u0005\n\u0000\u000067\u0005\u000f\u0000\u000078\u0005\u000f\u0000"+
-		"\u000089\u0005\u000f\u0000\u00009>\u0005\u000e\u0000\u0000:;\u0005\u000b"+
-		"\u0000\u0000;<\u0005\u0010\u0000\u0000<>\u0005\u000e\u0000\u0000=%\u0001"+
-		"\u0000\u0000\u0000=)\u0001\u0000\u0000\u0000=/\u0001\u0000\u0000\u0000"+
-		"=5\u0001\u0000\u0000\u0000=:\u0001\u0000\u0000\u0000>\u0005\u0001\u0000"+
-		"\u0000\u0000?@\u0005\f\u0000\u0000@\u0007\u0001\u0000\u0000\u0000\u0004"+
-		"\u000b\u001f#=";
+		"$\u0003\u0001\u0000\u0000\u0000%&\u0005\f\u0000\u0000&\u0005\u0001\u0000"+
+		"\u0000\u0000\'(\u0005\u0007\u0000\u0000()\u0005\u000f\u0000\u0000)*\u0005"+
+		"\u000f\u0000\u0000*@\u0005\u000e\u0000\u0000+,\u0005\b\u0000\u0000,-\u0005"+
+		"\u000f\u0000\u0000-.\u0005\u000f\u0000\u0000./\u0005\u000f\u0000\u0000"+
+		"/0\u0005\u000f\u0000\u00000@\u0005\u000e\u0000\u000012\u0005\t\u0000\u0000"+
+		"23\u0005\u000f\u0000\u000034\u0005\u000f\u0000\u000045\u0005\u000f\u0000"+
+		"\u000056\u0005\u000f\u0000\u00006@\u0005\u000e\u0000\u000078\u0005\n\u0000"+
+		"\u000089\u0005\u000f\u0000\u00009:\u0005\u000f\u0000\u0000:;\u0005\u000f"+
+		"\u0000\u0000;@\u0005\u000e\u0000\u0000<=\u0005\u000b\u0000\u0000=>\u0005"+
+		"\u0010\u0000\u0000>@\u0005\u000e\u0000\u0000?\'\u0001\u0000\u0000\u0000"+
+		"?+\u0001\u0000\u0000\u0000?1\u0001\u0000\u0000\u0000?7\u0001\u0000\u0000"+
+		"\u0000?<\u0001\u0000\u0000\u0000@\u0007\u0001\u0000\u0000\u0000\u0004"+
+		"\u000b\u001f#?";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
