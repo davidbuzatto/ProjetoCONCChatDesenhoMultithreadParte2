@@ -1,7 +1,7 @@
 package chatmultithread.parser.impl.visitor;
 
-import chatmultithread.parser.MensagensBaseVisitor;
 import chatmultithread.parser.MensagensParser;
+import chatmultithread.parser.MensagensParserBaseVisitor;
 import chatmultithread.utils.Utils;
 import java.awt.Color;
 import java.util.ArrayDeque;
@@ -19,9 +19,14 @@ import javax.swing.text.StyleConstants;
  * contadores e em uma pilha; ao alcançar um nó folha (texto), o estado
  * acumulado pelos ancestrais já está completo e é aplicado ao texto.
  *
+ * Nota: após a separação da gramática combinada em gramática léxica
+ * (MensagensParserLexer.g4) e gramática sintática (MensagensParser.g4), o ANTLR passa a
+ * gerar a classe MensagensParser (e não mais MensagensParserParser). Todos os contextos
+ * passam a ser referenciados como MensagensParser.XxxContext.
+ *
  * @author Prof. Dr. David Buzatto
  */
-public class MensagensVisitorImpl extends MensagensBaseVisitor<Void> {
+public class MensagensVisitorImpl extends MensagensParserBaseVisitor<Void> {
 
     // componente Swing onde o texto formatado será inserido
     private JTextPane textPane;
@@ -39,25 +44,13 @@ public class MensagensVisitorImpl extends MensagensBaseVisitor<Void> {
     private Deque<Color> pilhaCor;
 
     public MensagensVisitorImpl( JTextPane textPane ) {
-        
+
         this.textPane = textPane;
         this.attrSet = new SimpleAttributeSet();
         this.pilhaCor = new ArrayDeque<>();
 
         // cor padrão na base da pilha: garante que peek() nunca retorne null
         this.pilhaCor.push( Color.BLACK );
-        
-    }
-
-    @Override
-    public Void visitInicio( MensagensParser.InicioContext ctx ) {
-
-        // inicio pode conter mensagem+, então visita cada uma na ordem
-        for ( MensagensParser.MensagemContext mensagem : ctx.mensagem() ) {
-            visit( mensagem );
-        }
-
-        return null;
 
     }
 
@@ -119,6 +112,60 @@ public class MensagensVisitorImpl extends MensagensBaseVisitor<Void> {
         // completo; atualiza os atributos e insere o texto no componente
         atualizarAttributeSet();
         Utils.adicionarTextoFormatado( ctx.getText(), textPane, attrSet );
+
+        return null;
+
+    }
+
+    @Override
+    public Void visitDesenhoPonto( MensagensParser.DesenhoPontoContext ctx ) {
+
+        // ctx.NUM_INT(0) = x, ctx.NUM_INT(1) = y
+        System.out.println( "ponto" );
+        System.out.println( ctx.NUM_INT(0) );
+        System.out.println( ctx.NUM_INT(1) );
+
+        return null;
+
+    }
+
+    @Override
+    public Void visitDesenhoLinha( MensagensParser.DesenhoLinhaContext ctx ) {
+
+        // ctx.NUM_INT(0) = x1, ctx.NUM_INT(1) = y1,
+        // ctx.NUM_INT(2) = x2, ctx.NUM_INT(3) = y2
+        System.out.println( "linha" );
+
+        return null;
+
+    }
+
+    @Override
+    public Void visitDesenhoRetangulo( MensagensParser.DesenhoRetanguloContext ctx ) {
+
+        // ctx.NUM_INT(0) = x, ctx.NUM_INT(1) = y,
+        // ctx.NUM_INT(2) = largura, ctx.NUM_INT(3) = altura
+        System.out.println( "retangulo" );
+
+        return null;
+
+    }
+
+    @Override
+    public Void visitDesenhoCirculo( MensagensParser.DesenhoCirculoContext ctx ) {
+
+        // ctx.NUM_INT(0) = x, ctx.NUM_INT(1) = y, ctx.NUM_INT(2) = raio
+        System.out.println( "circulo" );
+
+        return null;
+
+    }
+
+    @Override
+    public Void visitDesenhoCor( MensagensParser.DesenhoCorContext ctx ) {
+
+        // ctx.NUM_HEX_TOK() = cor no formato #RRGGBB
+        System.out.println( "cor" );
 
         return null;
 

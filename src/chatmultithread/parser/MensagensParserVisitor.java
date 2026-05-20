@@ -1,4 +1,4 @@
-// Generated from gramatica/Mensagens.g4 by ANTLR 4.13.2
+// Generated from gramaticas/MensagensParser.g4 by ANTLR 4.13.2
 package chatmultithread.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -9,7 +9,7 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  * @param <T> The return type of the visit operation. Use {@link Void} for
  * operations with no return type.
  */
-public interface MensagensVisitor<T> extends ParseTreeVisitor<T> {
+public interface MensagensParserVisitor<T> extends ParseTreeVisitor<T> {
 	/**
 	 * Visit a parse tree produced by {@link MensagensParser#inicio}.
 	 * @param ctx the parse tree
@@ -44,6 +44,48 @@ public interface MensagensVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPartes(MensagensParser.PartesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code mensagemDesenho}
+	 * labeled alternative in {@link MensagensParser#mensagem}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMensagemDesenho(MensagensParser.MensagemDesenhoContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code desenhoPonto}
+	 * labeled alternative in {@link MensagensParser#desenho}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDesenhoPonto(MensagensParser.DesenhoPontoContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code desenhoLinha}
+	 * labeled alternative in {@link MensagensParser#desenho}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDesenhoLinha(MensagensParser.DesenhoLinhaContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code desenhoRetangulo}
+	 * labeled alternative in {@link MensagensParser#desenho}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDesenhoRetangulo(MensagensParser.DesenhoRetanguloContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code desenhoCirculo}
+	 * labeled alternative in {@link MensagensParser#desenho}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDesenhoCirculo(MensagensParser.DesenhoCirculoContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code desenhoCor}
+	 * labeled alternative in {@link MensagensParser#desenho}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDesenhoCor(MensagensParser.DesenhoCorContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MensagensParser#texto}.
 	 * @param ctx the parse tree

@@ -1,7 +1,7 @@
 package chatmultithread.parser.impl.listener;
 
-import chatmultithread.parser.MensagensBaseListener;
 import chatmultithread.parser.MensagensParser;
+import chatmultithread.parser.MensagensParserBaseListener;
 import chatmultithread.utils.Utils;
 import java.awt.Color;
 import java.util.ArrayDeque;
@@ -22,9 +22,14 @@ import javax.swing.text.StyleConstants;
  * os eventos enter dos nós ancestrais já foram disparados e o estado de
  * formatação está completo.
  *
+ * Nota: após a separação da gramática combinada em gramática léxica
+ * (MensagensParserLexer.g4) e gramática sintática (MensagensParser.g4), o ANTLR passa a
+ * gerar a classe MensagensParser (e não mais MensagensParserParser). Todos os contextos
+ * passam a ser referenciados como MensagensParser.XxxContext.
+ *
  * @author Prof. Dr. David Buzatto
  */
-public class MensagensListenerImpl extends MensagensBaseListener {
+public class MensagensListenerImpl extends MensagensParserBaseListener {
 
     // componente Swing onde o texto formatado será inserido
     private JTextPane textPane;
@@ -42,14 +47,14 @@ public class MensagensListenerImpl extends MensagensBaseListener {
     private Deque<Color> pilhaCor;
 
     public MensagensListenerImpl( JTextPane textPane ) {
-        
+
         this.textPane = textPane;
         this.attrSet = new SimpleAttributeSet();
         this.pilhaCor = new ArrayDeque<>();
 
         // cor padrão na base da pilha: garante que peek() nunca retorne null
         this.pilhaCor.push( Color.BLACK );
-        
+
     }
 
     @Override
@@ -106,6 +111,48 @@ public class MensagensListenerImpl extends MensagensBaseListener {
         // completo no momento da inserção do texto
         atualizarAttributeSet();
         Utils.adicionarTextoFormatado( ctx.getText(), textPane, attrSet );
+
+    }
+
+    @Override
+    public void enterDesenhoPonto( MensagensParser.DesenhoPontoContext ctx ) {
+
+        // ctx.NUM_INT(0) = x, ctx.NUM_INT(1) = y
+        System.out.println( "ponto" );
+
+    }
+
+    @Override
+    public void enterDesenhoLinha( MensagensParser.DesenhoLinhaContext ctx ) {
+
+        // ctx.NUM_INT(0) = x1, ctx.NUM_INT(1) = y1,
+        // ctx.NUM_INT(2) = x2, ctx.NUM_INT(3) = y2
+        System.out.println( "linha" );
+
+    }
+
+    @Override
+    public void enterDesenhoRetangulo( MensagensParser.DesenhoRetanguloContext ctx ) {
+
+        // ctx.NUM_INT(0) = x, ctx.NUM_INT(1) = y,
+        // ctx.NUM_INT(2) = largura, ctx.NUM_INT(3) = altura
+        System.out.println( "retangulo" );
+
+    }
+
+    @Override
+    public void enterDesenhoCirculo( MensagensParser.DesenhoCirculoContext ctx ) {
+
+        // ctx.NUM_INT(0) = x, ctx.NUM_INT(1) = y, ctx.NUM_INT(2) = raio
+        System.out.println( "circulo" );
+
+    }
+
+    @Override
+    public void enterDesenhoCor( MensagensParser.DesenhoCorContext ctx ) {
+
+        // ctx.NUM_HEX_TOK() = cor no formato #RRGGBB
+        System.out.println( "cor" );
 
     }
 

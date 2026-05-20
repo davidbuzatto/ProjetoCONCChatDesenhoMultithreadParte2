@@ -1,7 +1,7 @@
 package chatmultithread.gui;
 
 import chatmultithread.ChatMultithread;
-import chatmultithread.parser.MensagensLexer;
+import chatmultithread.lexer.MensagensLexer;
 import chatmultithread.parser.MensagensParser;
 import chatmultithread.parser.impl.listener.MensagensListenerImpl;
 import chatmultithread.parser.impl.visitor.MensagensVisitorImpl;
@@ -39,6 +39,14 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
  */
 public class JanelaCliente extends javax.swing.JFrame {
     
+    private static final String MENSAGEM_TESTE = "[ponto 10 10 /]";
+    //private static final String MENSAGEM_TESTE = "[linha 10 10 100 100 /]";
+    //private static final String MENSAGEM_TESTE = "[retangulo 10 10 100 100 /]";
+    //private static final String MENSAGEM_TESTE = "[circulo 10 10 100 /]";
+    //private static final String MENSAGEM_TESTE = "[cor #00FF00 /]";
+    //private static final String MENSAGEM_TESTE = "teste [b]teste[/b]";
+    //private static final String MENSAGEM_TESTE = null;
+    
     // nome do cliente para identificação nas mensagens
     private String nome;
     
@@ -72,6 +80,10 @@ public class JanelaCliente extends javax.swing.JFrame {
         
         // inicializa os componentes do formulário
         initComponents();
+        
+        if ( MENSAGEM_TESTE != null ) {
+            txtMensagem.setText( MENSAGEM_TESTE );
+        }
         
         // configura o botão btnEnviar como o padrão, ou seja, disparado
         // ao se teclar <ENTER>
@@ -129,10 +141,10 @@ public class JanelaCliente extends javax.swing.JFrame {
                         final String dados = linha;
                         
                         // despacha a alteração na EDT - mensagem crua
-                        SwingUtilities.invokeLater( () -> Utils.adicionarTextoNaoFormatado( dados + "\n", areaMensagens ) );
+                        //SwingUtilities.invokeLater( () -> Utils.adicionarTextoNaoFormatado( dados + "\n", areaMensagens ) );
                         
                         // despacha a alteração na EDT - analisa a mensagem
-                        /*SwingUtilities.invokeLater( () -> {
+                        SwingUtilities.invokeLater( () -> {
                             
                             try { 
                                 // faz a análise da mensagem e insere no JTextPane
@@ -146,7 +158,7 @@ public class JanelaCliente extends javax.swing.JFrame {
                             // pula linha
                             Utils.adicionarTextoNaoFormatado( "\n", areaMensagens );
                             
-                        });*/
+                        });
                         
                     }
                     

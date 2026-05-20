@@ -5,7 +5,7 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>ProjetoCONCChatDesenhoMultithreadParte2</name>
             <source-roots>
-                <root id="src.gramatica.dir" name="Gramática"/>
+                <root id="src.gramaticas.dir" name="Gramáticas"/>
                 <root id="src.dir"/>
             </source-roots>
             <test-roots>
