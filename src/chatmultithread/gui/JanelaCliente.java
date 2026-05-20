@@ -1,6 +1,5 @@
 package chatmultithread.gui;
 
-import br.com.davidbuzatto.jsge.core.engine.EngineFrame;
 import chatmultithread.ChatMultithread;
 import chatmultithread.lexer.MensagensLexer;
 import chatmultithread.parser.MensagensParser;
@@ -42,11 +41,11 @@ public class JanelaCliente extends javax.swing.JFrame {
     
     //private static final String MENSAGEM_TESTE = "[ponto 10 10 /]";
     //private static final String MENSAGEM_TESTE = "[linha 10 10 100 100 /]";
-    private static final String MENSAGEM_TESTE = "[retangulo 10 10 100 100 /]";
+    //private static final String MENSAGEM_TESTE = "[retangulo 10 10 100 100 /]";
     //private static final String MENSAGEM_TESTE = "[circulo 60 60 50 /]";
     //private static final String MENSAGEM_TESTE = "[cor #00FF00 /]";
     //private static final String MENSAGEM_TESTE = "teste [b]teste[/b]";
-    //private static final String MENSAGEM_TESTE = null;
+    private static final String MENSAGEM_TESTE = null;
     
     // nome do cliente para identificação nas mensagens
     private String nome;
