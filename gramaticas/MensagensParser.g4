@@ -20,7 +20,7 @@ mensagem : NEG_ESQ  mensagem  NEG_DIR   # mensagemNegrito
          | ITA_ESQ  mensagem  ITA_DIR   # mensagemItalico
          | COR_ESQ  mensagem  COR_DIR   # mensagemCor
          | texto    mensagem*           # partes
-         | desenho+                     # mensagemDesenho
+         | desenho                      # mensagemDesenho
          ;
 
 texto    : STRING ;
